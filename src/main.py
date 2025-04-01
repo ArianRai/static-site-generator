@@ -1,13 +1,25 @@
+import os
+import shutil
+
 from textnode import TextNode, TextType
 from copy_files import copy_files
+from generate_page import generate_page
 
-print("hello world!")
+static_path = "./static"
+public_path = "./public"
+content_path = "./content"
+template_path = "./template.html"
 
 
 def main():
-    my_node = TextNode("This is a test", TextType.LINK, "https://www.boot.dev")
-    my_node.__repr__()
-    copy_files("./static", "./public")
+    if os.path.exists(public_path):
+        shutil.rmtree(public_path)
+    copy_files(static_path, public_path)
+    generate_page(
+        os.path.join(content_path, "index.md"),
+        template_path,
+        os.path.join(public_path, "index.html"),
+    )
 
 
 main()
